@@ -6,7 +6,7 @@
 #    By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/21 08:51:13 by aanzieu           #+#    #+#              #
-#    Updated: 2017/03/28 10:23:56 by aanzieu          ###   ########.fr        #
+#    Updated: 2017/03/28 17:24:37 by aanzieu          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,8 +81,8 @@ cudaobj/%.o: cudasrcs/%.cu
 	printf '\033[0m[✔] %s\n\033[0m' "$<"
 
 clean:
-	/bin/rm -rf obj/
-	/bin/rm -rf cudaobj/
+	rm -rf obj/
+	rm -rf cudaobj/
 	make -C srcs/libft/ clean
 	make -C minilibx_macos/ clean
 	printf '\033[31m[✔] %s\n\033[0m' "Clean Libft"
