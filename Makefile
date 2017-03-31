@@ -6,7 +6,7 @@
 #    By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/21 08:51:13 by aanzieu           #+#    #+#              #
-#    Updated: 2017/03/28 17:24:37 by aanzieu          ###   ########.fr        #
+#    Updated: 2017/03/31 10:24:04 by aanzieu          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ CUDAHDR = cudainclude
 
 CSRC	= $(CUDASRC)/fractol_cuda_mandelbrot.cu \
 			$(CUDASRC)/fractol_cuda_julia.cu \
+			$(CUDASRC)/fractol_cuda_rdone.cu \
 
 SRC		= $(SRCDIR)/fractol.c \
 			$(SRCDIR)/fractol_colors.c \
@@ -31,14 +32,14 @@ SRC		= $(SRCDIR)/fractol.c \
 			$(SRCDIR)/fractol_del.c \
 			$(SRCDIR)/fractol_hook.c \
 			$(SRCDIR)/fractol_mouse.c \
-
+			$(SRCDIR)/fractol_put_infos.c \
+			$(SRCDIR)/fractol_burning.c \
 
 OBJ		= $(patsubst src/%.c,obj/%.o,$(SRC))
 .SILENT:
 
 COBJ		= $(patsubst cudasrcs/%.cu,cudaobj/%.o,$(CSRC))
 .SILENT:
-
 
 LIBFTDIR = srcs/libft/
 LIBFT =  $(LIBFTDIR)libft.a
@@ -63,7 +64,6 @@ $(NAME): $(LIBFT) $(MLXLIB) $(OBJ) $(COBJ)
 	@nvcc -Wno-deprecated-gpu-targets $(NVCC_C) $(NVCC_ARCH) $(NVCC_STD) $(NVCC_FRAMEWORK) $(NVCC_FLAGS) $(NVCC_LIB) -o $(NAME) $(OBJ) $(LIBFT) $(MLXLIB) $(COBJ)
 	printf '\033[32m[✔] %s\n\033[0m' "Create Fractol"
 
-
 $(LIBFT):
 	make -C $(LIBFTDIR)
 
@@ -73,12 +73,12 @@ $(MLXLIB):
 obj/%.o: srcs/%.c
 	mkdir -p srcsobj
 	@gcc -L $(LIBFTDIR) -I $(MLXDIR) $(CUDAHDR) -c $< -o $@
-	printf '\033[0m[✔] %s\n\033[0m' "$<"
+	#printf '\033[0m[✔] %s\n\033[0m' "$<"
 
 cudaobj/%.o: cudasrcs/%.cu
 	mkdir -p cudaobj
 	@nvcc -Wno-deprecated-gpu-targets $(NVCC_C) $(NVCC_ARCH) $(NVCC_STD) $(NVCC_VCODE) -I $(CUDA)/include -I ./include -I $(CUDAHDR) -c $< -o $@
-	printf '\033[0m[✔] %s\n\033[0m' "$<"
+	#printf '\033[0m[✔] %s\n\033[0m' "$<"
 
 clean:
 	rm -rf obj/

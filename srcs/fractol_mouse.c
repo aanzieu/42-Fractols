@@ -6,7 +6,7 @@
 /*   By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 09:03:59 by aanzieu           #+#    #+#             */
-/*   Updated: 2017/03/28 10:18:58 by aanzieu          ###   ########.fr       */
+/*   Updated: 2017/03/31 08:35:45 by aanzieu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			mouse_mouve(int x, int y, t_env *e)
 		e->plan.offy += (double)(e->mouse.lasty - e->mouse.y)
 			/ WIN_HEIGTH * h;
 	}
-	if (e->plan.ctrl)
+	if (e->plan.ctrl && e->view.fract == 1)
 	{
 		julia_fixed_image(e, x, y);
 		return (0);

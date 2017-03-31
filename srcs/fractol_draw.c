@@ -6,7 +6,7 @@
 /*   By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 07:35:25 by aanzieu           #+#    #+#             */
-/*   Updated: 2017/03/28 16:17:00 by aanzieu          ###   ########.fr       */
+/*   Updated: 2017/03/31 10:19:57 by aanzieu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	print_fractal_cuda(t_env *e)
 	size = WIN_HEIGTH * WIN_WIDTH;
 	if (!(a_h = (unsigned int *)malloc(sizeof(unsigned int) * size)))
 		ft_put_and_free_error(e, "ERROR MALLOC", 2);
+	if (e->fractal->f_c == NULL)
+		ft_put_and_free_error(e, "No Gpu for this Fract\n", 2);
 	e->fractal->f_c(a_h, size, e, 0);
 	y = 0;
 	while (y <= WIN_HEIGTH)
@@ -37,7 +39,7 @@ void	print_fractal_cuda(t_env *e)
 		x = 0;
 		while (x <= WIN_WIDTH)
 		{
-			draw_p(e, x, y, get_c(a_h[y * WIN_HEIGTH + x], e));
+			draw_p(e, x, y, get_c(a_h[y * WIN_HEIGTH + x], e, 0, 0));
 			x++;
 		}
 		y++;
@@ -60,7 +62,7 @@ void	print_fractal(t_env *e, t_fractal *f)
 		{
 			i = f->f_p(x, y, &e->view, &e->plan);
 			if (i != e->plan.i_max)
-				draw_p(e, x, y, get_c(i, e));
+				draw_p(e, x, y, get_c(i, e, 0, 0));
 			x++;
 		}
 		y++;

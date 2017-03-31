@@ -6,7 +6,7 @@
 /*   By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 16:48:29 by aanzieu           #+#    #+#             */
-/*   Updated: 2017/03/14 15:33:54 by aanzieu          ###   ########.fr       */
+/*   Updated: 2017/03/31 10:26:22 by aanzieu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 int		print_sponge(int x, int y, t_view *v, t_plan *p)
 {
 	int		i;
-	(void)v;
+
+	v->xmin = -2.0f;
+	v->xmax = 2.0f;
+	v->ymin = -2.0f;
+	v->ymax = 2.0f;
 	i = 0;
-	p->zoom = (p->zoom >= 5) ? 1.6 : p->zoom;
-	p->zoom = (p->zoom <= 0.6) ? 1.6 : p->zoom;
-	x = (x) / p->zoom;
-	y = (y) / p->zoom;
+	x = (((double)x / WIN_WIDTH) *
+			(v->xmax - v->xmin)) * p->zoom + v->xmin + p->offx;
+	y = (((double)y / WIN_HEIGTH) *
+			(v->ymax - v->ymin)) * p->zoom + v->ymin + p->offy;
 	x = ft_abs(x);
 	y = ft_abs(y);
 	while ((x > 0 || y > 0) && i < p->i_max)
@@ -33,4 +37,3 @@ int		print_sponge(int x, int y, t_view *v, t_plan *p)
 	}
 	return (i);
 }
-

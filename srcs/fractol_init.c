@@ -6,7 +6,7 @@
 /*   By: aanzieu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/07 12:47:02 by aanzieu           #+#    #+#             */
-/*   Updated: 2017/03/28 16:45:40 by aanzieu          ###   ########.fr       */
+/*   Updated: 2017/03/31 10:22:04 by aanzieu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void		init_env_next(t_env *e)
 {
 	e->plan.offx = 0;
 	e->plan.offy = 0;
-	e->plan.zoom = 1.1f;
+	if (ft_strcmp(e->fractal->str, "sponge") == 0)
+		e->plan.zoom = 2000;
+	else
+		e->plan.zoom = 1.1f;
 	e->plan.i_max = 500;
 	e->plan.radius = 4;
 	e->plan.power = 2;
@@ -38,24 +41,20 @@ void		init_env_next(t_env *e)
 	e->plan.ci = 0;
 	e->plan.ctrl = 1;
 	e->opt = FRACT;
+	e->infos = 0;
+	e->view.fract = 0;
 }
 
-t_env		*init_env(t_fractal *f)
+void		init_env(t_env *e, t_fractal *f)
 {
-	t_env	*e;
 	char	*title;
 
 	title = ft_strjoin("Aanzieu - Fract'ol-- ", f->str);
-	if (!(e = (t_env*)ft_memalloc(sizeof(t_env))))
-		ft_put_and_free_error(e, "Malloc Error\n", 2);
-	if ((e->mlx = mlx_init()) == NULL
-			|| (e->win = mlx_new_window(e->mlx, WIN_WIDTH, WIN_HEIGTH, title))
-			== NULL)
+	if ((e->win = mlx_new_window(e->mlx, WIN_WIDTH, WIN_HEIGTH, title)) == NULL)
 		ft_put_and_free_error(e, "Init mlx Error\n", 2);
 	free(title);
 	e->fractal = f;
 	e->image = new_image(e);
-	e->color = init_color(1, 0, 0);
+	init_color(1, 0, 0, e);
 	init_env_next(e);
-	return (e);
 }
